@@ -7,6 +7,7 @@ from . import util, html
 from subprocess import Popen, PIPE
 from scipy.misc import imresize
 
+
 if sys.version_info[0] == 2:
     VisdomExceptionBase = Exception
 else:

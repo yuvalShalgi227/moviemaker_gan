@@ -32,17 +32,38 @@ from data import create_dataset
 from models import create_model
 from util.visualizer import save_images
 from util import html
-import numpy
-import cv2
-from util import util
-from util.visualizer import save_images
-from util import html
 from scipy.misc import imresize
 from util import util
 import cv2
 from PIL import Image
 import numpy
-from util.visualizer import save_images
+
+video_name="test1.avi"
+image_folder="./vids"
+def use_image( visuals, image_path, aspect_ratio=1.0, width=256):
+    images=[]
+    for label, im_data in visuals.items():
+        image_name = '%s_%s.png' % ('frame', label)
+        if not image_name.endswith("fake_B.png"):
+            continue
+        im = util.tensor2im(im_data)
+
+        print(image_name)
+        #save_path = os.path.join(image_dir, image_name)
+        h, w, _ = im.shape
+        if aspect_ratio > 1.0:
+            im = imresize(im, (h, int(w * aspect_ratio)), interp='bicubic')
+        if aspect_ratio < 1.0:
+            im = imresize(im, (int(h / aspect_ratio), w), interp='bicubic')
+
+        image_pil = Image.fromarray(im)
+        open_cv_image = cv2.cvtColor(numpy.array(image_pil), cv2.COLOR_RGB2BGR)
+        images.append(open_cv_image)
+    video = cv2.VideoWriter(video_name, 0, 25, (width, 256))
+
+    for image in images:
+        video.write(image)
+
 
 if __name__ == '__main__':
     opt = TestOptions().parse()  # get test options
@@ -53,7 +74,7 @@ if __name__ == '__main__':
     opt.no_flip = True    # no flip; comment this line if results on flipped images are needed.
     opt.display_id = -1   # no visdom display; the test code saves the results to a HTML file.
     opt.epoch="10"
-    opt.num_test=3000
+    opt.num_test=300
     dataset = create_dataset(opt)  # create a dataset given opt.dataset_mode and other options
     model = create_model(opt)      # create a model given opt.model and other options
     model.setup(opt)               # regular setup: load and print networks; create schedulers
@@ -72,33 +93,8 @@ if __name__ == '__main__':
         model.test()           # run inference
         visuals = model.get_current_visuals()  # get image results
         img_path = model.get_image_paths()     # get image paths
-        if i % 5 == 0:  # save images to an HTML file
-            print('processing (%04d)-th image... %s' % (i, img_path))
-        save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
-
-    #adding write vid
-    aspect_ratio = opt.aspect_ratio
-    video_name="testout.avi"
-    images=[]
-    for label, im_data in visuals.items():
-        image_name = '%s_%s.png' % ('frame', label)
-        if not image_name.endswith("fake_B.png"):
-            continue
-        im = util.tensor2im(im_data)
-
-        print(image_name)
-        # save_path = os.path.join(image_dir, image_name)
-        h, w, _ = im.shape
-        if aspect_ratio > 1.0:
-            im = imresize(im, (h, int(w * aspect_ratio)), interp='bicubic')
-        if aspect_ratio < 1.0:
-            im = imresize(im, (int(h / aspect_ratio), w), interp='bicubic')
-
-        image_pil = Image.fromarray(im)
-        open_cv_image = cv2.cvtColor(numpy.array(image_pil), cv2.COLOR_RGB2BGR)
-        images.append(open_cv_image)
-    video = cv2.VideoWriter(video_name, 0, 25, (256, 256))
-
+        use_image(visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize)
     print(i)
 
     webpage.save()  # save the HTML
+

@@ -58,6 +58,9 @@ class UnalignedDataset(BaseDataset):
         #while (cap.isOpened()):
         ret, frame = self.cap.read() #clay cap to self.cap
 
+        #if frame == None:
+        #    return None
+
         #A_img = Image.open(A_path).convert('RGB')
         A_img = Image.fromarray(frame).convert('RGB')
         # apply image transformation

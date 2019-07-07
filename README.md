@@ -1,7 +1,3 @@
-<img src='imgs/horse2zebra.gif' align="right" width=384>
-
-<br><br><br>
-
 # Movie maker for CycleGAN and pix2pix in PyTorch
 
 A slight modification for https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix

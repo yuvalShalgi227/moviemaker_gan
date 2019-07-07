@@ -2,12 +2,12 @@
 
 <br><br><br>
 
-# movie maker for CycleGAN and pix2pix in PyTorch
+# Movie maker for CycleGAN and pix2pix in PyTorch
 
 A slight modification for https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
 Allows to make a movie for trained checkpoints by using the --movie in.avi --movie_result out.avi
 
-The rest of doc is from pytorch-CycleGAN-and-pix2pix :
+# The rest of doc is from pytorch-CycleGAN-and-pix2pix :
 
 This PyTorch implementation produces results comparable to or better than our original Torch software. If you would like to reproduce the same results as in the papers, check out the original [CycleGAN Torch](https://github.com/junyanz/CycleGAN) and [pix2pix Torch](https://github.com/phillipi/pix2pix) code
 

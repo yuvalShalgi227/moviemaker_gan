@@ -5,10 +5,10 @@
 # Movie maker for CycleGAN and pix2pix in PyTorch
 
 A slight modification for https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
-Allows to make a movie for trained checkpoints by using added paramter:
-- Clone this repo:
+Allows to make a movie for trained checkpoints by 
+- using added paramter:
 ```bash
---movie in.avi --movie_result out.avi
+movie_make.py --dataroot ./datasets/maps --name maps_cyclegan --model cycle_gan --movie in.avi --movie_result out.avi 
 ```
 
 # The rest of doc is from pytorch-CycleGAN-and-pix2pix :
